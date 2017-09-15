@@ -1,26 +1,26 @@
-drop database if exists Bamazon_db;
+DROP DATABASE if exists Bamazon_db;
 
-create database Bamazon_db;
+CREATE DATABASE Bamazon_db;
 
-use Bamazon_db;
+USE Bamazon_db;
 
-create table products(
-item_id integer auto_increment not null,
-product_name varchar(30),
-department_name varchar(30),
-price decimal(5,2),
-stock_quantity integer,
-primary key(item_id)
+CREATE TABLE products(
+item_id INTEGER AUTO_INCREMENT NOT NULL,
+product_name VARCHAR(30),
+department_name VARCHAR(30),
+price DECIMAL(10,4),
+stock_quantity INTEGER,
+PRIMARY KEY(item_id)
 );
 
-insert into products(product_name, department_name, price, stock_quantity) values("toothpaste", "hygiene", 3.48, 220);
-insert into products(product_name, department_name, price, stock_quantity) values("daipers", "baby", 18.98, 300);
-insert into products(product_name, department_name, price, stock_quantity) values("peanuts", "snacks", 2.50, 550);
-insert into products(product_name, department_name, price, stock_quantity) values( "mouth wash", "hygiene", 3.50, 100);
-insert into products(product_name, department_name, price, stock_quantity) values("headphones", "accessories", 35.00, 80);
-insert into products(product_name, department_name, price, stock_quantity) values("phone charger", "accessories", 20.80, 85);
-insert into products(product_name, department_name, price, stock_quantity) values("deodorant", "hygiene", 4.25, 125);
-insert into products(product_name, department_name, price, stock_quantity) values("red shirt", "clothing", 14.88, 45);
-insert into products(product_name, department_name, price, stock_quantity) values("black socks", "clothing", 8.99, 55);
-insert into products(product_name, department_name, price, stock_quantity) values("pacifier", "baby", 4.80, 35);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES("toothpaste", "hygiene", 3.48, 220);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES("daipers", "baby", 18.98, 300);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES("peanuts", "snacks", 2.50, 550);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES( "mouth wash", "hygiene", 3.50, 100);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES("headphones", "accessories", 35.00, 80);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES("phone charger", "accessories", 20.80, 85);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES("deodorant", "hygiene", 4.25, 125);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES("red shirt", "clothing", 14.88, 45);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES("black socks", "clothing", 8.99, 55);
+INSERT INTO products(product_name, department_name, price, stock_quantity) VALUES("pacifier", "baby", 4.80, 35);
 
