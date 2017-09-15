@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 var inquirer = require('inquirer');
-var Table = require('cli-table');
+var Table = require('cli-table-zh');
 
 
 //how many units of the product
@@ -28,8 +28,12 @@ connection.connect(function(err) {
 function displayAllItems() {
 
 	var table = new Table ({
+		chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
+		, 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'
+		, 'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
+		, 'right': '║' , 'right-mid': '╢' , 'middle': '│' },
 		head: ["ID", "Item", "Department", "Price", "Available"],
-		colWidths: [4, 20, 20, 20, 20]
+		colWidths: [8, 20, 15, 10, 15]
 	});
 
   connection.query("SELECT * FROM products", function(err, res) {
