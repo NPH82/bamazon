@@ -16,14 +16,15 @@ var connection = mysql.createConnection({
   user: "root",
 
   password: "",
-  database: "Bamazon_db"
+  database: "bamazon_db"
 });
-
+function connected () {
 connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
   displayAllItems();
 });
+};
 
 function displayAllItems() {
   connection.query("SELECT * FROM products", function(err, res) {
@@ -33,28 +34,61 @@ function displayAllItems() {
     	console.log("Product: " + res[i].product_name);
     	console.log("Price: $" + parseFloat(res[i].price));
     	console.log("=".repeat(25));
-    }
-    connection.end();
-  });
+		}
+		customerChoices();
+	});
 }
 
 
 function customerChoices () {
-	inquirer.prompt([
-	{
+	inquirer
+	.prompt({
 		type: "input",
 		message: "What is the item number of the product you would like to purchase?",
 		name: "itemNumber"
-	}, 
-	{
-		type: "input",
-		message: "How many units of the item would you like to purchase?",
-		name: "unitQuanity"
-	}]).then(function(answer) {
+	})
+	.then(function(answer) {
 		//check to see if there is enough product to meet customer request
-		console.log(answer.itemNumber);
-		console.log(answer.unitQuanity);
+		var query = "SELECT stock_quantity, product_name FROM products WHERE ?";
+		connection.query(query, { item_id: answer.itemNumber }, function(err, res) {
+			for(var i = 0, l = res.length; i < l; i++) {
+			if(res[i].stock_quantity === 0) {
+				console.log("\n");
+				console.log("=".repeat(50));
+				console.log("We are currently out of " + res[i].product_name + " supplies.")
+				console.log("=".repeat(50) + "\n");
+				additonalPurchase();
+			} else {
+				console.log("=".repeat(50));
+			console.log("There are " + res[i].stock_quantity + " units of " + res[i].product_name + " available.")
+			console.log("=".repeat(50) + "\n");
+		}
+	}
+		})
+		
 		//if not return "insuffiect quantity"
+});
+	// connection.end();
+}
+
+function additonalPurchase() {
+	inquirer
+	.prompt({
+		type: "confirm",
+		message: "Would you like to make another purchase?",
+		name: "oneMoreBuy"
+	})
+	.then(function(answer) {
+		if (answer.oneMoreBuy === true) {
+			displayAllItems();
+		} else {
+			console.log("\n");
+			console.log("=".repeat(60));
+			console.log("Thanks for shopping with Bamazon. Hope to see you again.");
+			console.log("=".repeat(60) + "\n");
+			connection.end();
+		}
 	})
 }
-customerChoices();
+
+connected();
