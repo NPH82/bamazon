@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var inquirer = require('inquirer');
+var Table = require('cli-table');
 
 
 //how many units of the product
@@ -25,17 +26,21 @@ connection.connect(function(err) {
 };
 //displays items in command line
 function displayAllItems() {
+
+	var table = new Table ({
+		head: ["ID", "Item", "Department", "Price", "Available"],
+		colWidths: [4, 20, 20, 20, 20]
+	});
+
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) throw err;
     for(var i = 0, l = res.length; i < l; i++) {
-    	console.log("Item ID: " + res[i].item_id);
-    	console.log("Product: " + res[i].product_name);
-    	console.log("Price: $" + parseFloat(res[i].price));
-    	console.log("=".repeat(25));
+    	table.push([res[i].item_id, res[i].product_name, res[i].department_name, "$" + parseFloat(res[i].price), res[i].stock_quantity]);
 		}
+		console.log(table.toString());
 		customerChoices();
-	});
-}
+	})
+};
 
 //asks customers the product they would like to buy
 function customerChoices () {
@@ -103,5 +108,6 @@ function additonalPurchase() {
 		}
 	})
 }
+};
 
 connected();
