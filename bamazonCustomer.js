@@ -2,17 +2,10 @@ var mysql = require('mysql');
 var inquirer = require('inquirer');
 var Table = require('cli-table-zh');
 
-
-//how many units of the product
-
-//if enough update mySQL to reflect remaining quantity
-//once updated show customer to cost of purchase
 var connection = mysql.createConnection({
   host: "localhost",
-  port: 3306,
-
+  PORT: 3306,
   user: "root",
-
   password: "",
   database: "bamazon_db"
 });
@@ -20,7 +13,6 @@ var connection = mysql.createConnection({
 function connected () {
 connection.connect(function(err) {
   if (err) throw err;
-  console.log("connected as id " + connection.threadId);
   displayAllItems();
 });
 };
@@ -69,14 +61,16 @@ function customerChoices () {
 			for(var i = 0, l = res.length; i < l; i++) {
 				var updatedQuantity = (res[i].stock_quantity - answer.quantity);
 				var subTotal = parseFloat(answer.quantity * res[i].price);
-
+			
+				//if enough update mySQL to reflect remaining quantity
 			if(res[i].stock_quantity === 0 || updatedQuantity < 0) {
 				console.log("\n");
 				console.log("=".repeat(50));
-				console.log("We are currently out of " + res[i].product_name + " supplies.")
+				console.log("We currently have only " + res[i].stock_quantity + " units of " + res[i].product_name + ".")
 				console.log("=".repeat(50) + "\n");
 				additonalPurchase();
 			} else {
+				//once updated show customer to cost of purchase
 				var query = "UPDATE products SET stock_quantity = " + updatedQuantity + " WHERE ?";
 				
 				connection.query(query, { item_id: answer.itemNumber }, function(err, res) {
@@ -115,3 +109,4 @@ function additonalPurchase() {
 };
 
 connected();
+
