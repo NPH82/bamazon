@@ -10,7 +10,7 @@ To run the Bamazon Customer file , you begin with a simple node command: `node b
 From there a table is opened up for the customer to view: 
 
 ![Image of Opening Customer Screen]
-(imagepath)
+(/bcustomer.png)
 
 The customer is prompted to:
 * select the ID of the product they wish to purchase
