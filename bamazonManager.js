@@ -109,6 +109,34 @@ function displayAllItems() {
   }
 
   function addInventory() {
-    
+    inquirer.prompt([
+      {
+        type: "input",
+        message: "What item ID would you like to replenish?",
+        name: "itemId"
+      },
+      {
+        type: "input",
+        message: "How many units would you like to add to the inventory?",
+        name: "replenish"
+      }
+    ]).then(function(answer){
+      var query = "SELECT stock_quantity, product_name, price FROM products WHERE ?";
+      connection.query(query, { item_id: answer.itemId }, function(err, res) {
+          
+        for(var i = 0, l = res.length; i < l; i++) {
+          var updatedQuantity = parseInt(res[i].stock_quantity) + parseInt(answer.replenish);
+      var query = "UPDATE products SET stock_quantity = " + updatedQuantity + " WHERE ?";
+      connection.query(query, { item_id: answer.itemId }, function(err, res) {
+      })
+        console.log("\n");
+        console.log("+".repeat(60));
+        console.log("The product: " + res[i].product_name + " has been replenished to " + updatedQuantity + "units.");
+        console.log("+".repeat(60));
+        console.log("\n");
+    }
+    andThen();
+      })
+    });
   }
 connected();
